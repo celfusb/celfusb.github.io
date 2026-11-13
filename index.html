@@ -183,7 +183,7 @@ footer .brand .logo{width:40px}
         <ul class="info">
           <li><b>Correo</b><a href="mailto:celf-fceusb@usb.ve">celf-fceusb@usb.ve</a></li>
           <li><b>Instagram</b><span>@celf_usb</span></li>
-          <li><b>Dónde estamos</b><span>FE1, piso 2, Universidad Simón Bolívar, Sartenejas, Baruta, estado Miranda</span></li>
+          <li><b>Dónde estamos</b><span>FE1, piso 2, Universidad Simón Bolívar, Sartenejas, Baruta, estado Miranda, Venezuela.</span></li>
         </ul>
       </div>
       <form id="form">
@@ -233,7 +233,7 @@ footer .brand .logo{width:40px}
     ev.preventDefault();
     var n=document.getElementById('n').value,e=document.getElementById('e').value,m=document.getElementById('m').value;
     var body='Nombre: '+n+'\nCorreo: '+e+'\n\n'+m;
-    location.href='mailto:celf@usb.ve?subject='+encodeURIComponent('Mensaje desde la web del CELF')+'&body='+encodeURIComponent(body);
+    location.href='mailto:celf-fceusb@usb.ve?subject='+encodeURIComponent('Mensaje desde la web del CELF')+'&body='+encodeURIComponent(body);
     document.getElementById('ok').textContent='Se abrió tu programa de correo con el mensaje listo para enviar.';
   });
 })();
