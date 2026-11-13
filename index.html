@@ -47,6 +47,9 @@ a{color:inherit}
 .lab{margin-top:clamp(28px,5vw,56px);border-top:1px solid #3a2b66;padding:18px 0 24px}
 .lab canvas{display:block;width:100%;height:clamp(190px,30vw,300px)}
 .ctl{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;margin-top:10px;color:#cfc6ee;font-size:.95rem}
+.ctl label{display:flex;align-items:center;gap:12px}
+.ctl input{width:min(260px,52vw);accent-color:#7fdcf7}
+.ctl output{font-variant-numeric:tabular-nums;color:#7fdcf7;font-weight:600}
 .key{display:flex;gap:16px;flex-wrap:wrap}
 .key span::before{content:"";display:inline-block;width:18px;height:3px;border-radius:2px;margin-right:7px;vertical-align:middle;background:var(--c)}
 
@@ -87,28 +90,28 @@ input[type=text]:focus,input[type=email]:focus,textarea:focus{border-color:var(-
 form .btn{justify-self:start}
 #ok{color:var(--cel);font-weight:500;min-height:1.5em}
 
-.gallery{background:var(--black);color:#efeaff}
-.gallery .lead{color:#b3a8d6}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px;margin-top:36px}
-.ph{margin:0;border:1px solid #3a2b66;border-radius:14px;overflow:hidden;background:#150c2b}
-.ph button{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
-.ph img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
-.ph figcaption{padding:16px 18px 20px}
-.ph h3{font-size:1.15rem;margin-bottom:6px}
-.ph p{color:#b3a8d6;font-size:.97rem}
-.empty{margin-top:36px;color:#b3a8d6;border-left:3px solid #7fdcf7;padding-left:18px}
-#lb{border:0;border-radius:14px;padding:0;background:var(--black);color:#efeaff;width:min(960px,94vw)}
-#lb::backdrop{background:rgba(7,4,15,.88)}
-#lb img{display:block;width:100%;max-height:72vh;object-fit:contain;background:#000}
-#lb .cap{padding:16px 20px 20px}
-#lb h3{font-size:1.25rem;margin-bottom:6px}
-#lb p{color:#b3a8d6}
-#lb .x{position:absolute;top:10px;right:10px;border:0;border-radius:99px;background:#7fdcf7;color:#07040f;font:600 .95rem var(--tx);padding:8px 16px;cursor:pointer}
 footer{background:var(--black);color:#b3a8d6;padding:32px 0;font-size:.95rem}
 footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
 footer .brand{color:#efeaff}
 footer .brand .logo{width:40px}
 
+/* Galería */
+#contacto{border-top:1px solid var(--line)}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:32px 28px;margin-top:36px}
+.gal figure{margin:0}
+.gal .ph{display:block;width:100%;aspect-ratio:4/3;padding:0;border:0;border-bottom:4px solid var(--vio);border-radius:14px;overflow:hidden;background:var(--bg2);cursor:zoom-in}
+.gal img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .35s}
+.gal .ph:hover img{transform:scale(1.04)}
+.gal h3{font-size:1.2rem;margin:14px 0 6px}
+.gal p,.vacia{color:var(--muted);font-size:.98rem}
+#vis{border:0;padding:0;border-radius:14px;background:var(--bg);color:var(--ink);width:min(900px,92vw);max-height:92vh;overflow:auto}
+#vis::backdrop{background:rgba(7,4,15,.85)}
+#vis img{display:block;width:100%;max-height:68vh;object-fit:contain;background:#07040f}
+#vis div{padding:16px 24px 22px}
+#vis h3{font-size:1.35rem;margin-bottom:6px}
+#vis p{color:var(--muted)}
+#vis .x{position:absolute;top:10px;right:10px;width:40px;height:40px;border:0;border-radius:50%;background:#07040f;color:#fff;font-size:1.1rem;cursor:pointer}
+@media (prefers-reduced-motion:reduce){.gal img{transition:none}}
 @media (max-width:760px){
   .about,.contact{grid-template-columns:1fr}
   .about .logo{width:180px}
@@ -143,8 +146,6 @@ footer .brand .logo{width:40px}
       <div class="lab">
         <canvas id="waves" role="img" aria-label="Simulación de la suma de dos ondas con frecuencias distintas"></canvas>
         <div class="ctl">
-          <span>Suma de dos ondas de frecuencia distinta (¡esta es nuestra identidad!)</span>
-          <span class="key"><span style="--c:#7fdcf7">Onda 1</span><span style="--c:#9a72ff">Onda 2</span><span style="--c:#ffffff">Suma</span></span>
         </div>
       </div>
     </div>
@@ -189,11 +190,12 @@ footer .brand .logo{width:40px}
     </div>
   </section>
 
-  <section id="galeria" class="gallery">
+  <section id="galeria">
     <div class="wrap">
       <h2>Galería</h2>
-      <p class="lead">Momentos de nuestras actividades, charlas y encuentros.</p>
-      <div class="grid" id="grid"></div>
+      <p class="lead">Momentos del CELF: actividades, charlas y vida estudiantil.</p>
+      <div class="gal" id="gal"></div>
+      <p class="vacia" id="galvacia" hidden>Pronto compartiremos fotografías del centro.</p>
     </div>
   </section>
 
@@ -219,6 +221,12 @@ footer .brand .logo{width:40px}
   </section>
 </main>
 
+<dialog id="vis" aria-label="Fotografía ampliada">
+  <button class="x" type="button" aria-label="Cerrar">✕</button>
+  <img alt="">
+  <div><h3></h3><p></p></div>
+</dialog>
+
 <footer>
   <div class="wrap">
     <span class="brand"><span class="logo" role="img" aria-label="Logo del CELF"></span><span>Centro de Estudiantes de Física</span></span>
@@ -226,55 +234,67 @@ footer .brand .logo{width:40px}
   </div>
 </footer>
 
-<dialog id="lb" aria-label="Foto ampliada">
-  <button class="x" type="button" id="lbx">Cerrar</button>
-  <img id="lbi" alt="">
-  <div class="cap"><h3 id="lbt"></h3><p id="lbd"></p></div>
-</dialog>
-
-<script src="galeria.js"></script>
 <script>
-(function(){
-  var list=window.FOTOS||[],g=document.getElementById('grid'),lb=document.getElementById('lb');
-  if(!list.length){var e=document.createElement('p');e.className='empty';e.textContent='Pronto publicaremos fotos de nuestras actividades.';g.replaceWith(e);return}
-  list.forEach(function(f){
-    var fig=document.createElement('figure'),b=document.createElement('button'),im=new Image(),c=document.createElement('figcaption'),h=document.createElement('h3'),d=document.createElement('p');
-    fig.className='ph';b.type='button';b.setAttribute('aria-label','Ampliar foto: '+(f.titulo||''));
-    im.src=f.src;im.alt=f.titulo||'';im.loading='lazy';im.onerror=function(){fig.remove()};
-    h.textContent=f.titulo||'';d.textContent=f.descripcion||'';
-    b.appendChild(im);c.appendChild(h);c.appendChild(d);fig.appendChild(b);fig.appendChild(c);g.appendChild(fig);
-    b.onclick=function(){
-      document.getElementById('lbi').src=f.src;document.getElementById('lbi').alt=f.titulo||'';
-      document.getElementById('lbt').textContent=f.titulo||'';document.getElementById('lbd').textContent=f.descripcion||'';
-      lb.showModal();
-    };
-  });
-  document.getElementById('lbx').onclick=function(){lb.close()};
-  lb.addEventListener('click',function(ev){if(ev.target===lb)lb.close()});
-})();
+/* ================= GALERÍA (solo el administrador la edita) =================
+   Para agregar una foto:
+   1) Sube la imagen a la carpeta "fotos" del repositorio.
+   2) Agrega una línea nueva a esta lista, con este formato:
+      {src:'fotos/mi-foto.jpg', alt:'Qué se ve en la foto', titulo:'Título', descripcion:'Descripción corta.'},
+   Para quitar una foto, borra su línea. Las fotos se muestran en el orden de la lista. */
+var FOTOS=[
+  {src:'fotos/ejemplo-1.svg',alt:'Imagen de ejemplo con ondas moradas',titulo:'Foto de ejemplo 1',descripcion:'Reemplaza esta imagen y esta descripción por las de tu actividad.'},
+  {src:'fotos/ejemplo-2.svg',alt:'Imagen de ejemplo con ondas celestes',titulo:'Foto de ejemplo 2',descripcion:'Cada foto lleva un título y una descripción que escribe el administrador.'},
+  {src:'fotos/ejemplo-3.svg',alt:'Imagen de ejemplo con ondas superpuestas',titulo:'Foto de ejemplo 3',descripcion:'Borra estas tres líneas cuando subas tus fotografías reales.'}
+];
 </script>
 <script>
 (function(){
-  var cv=document.getElementById('waves'),cx=cv.getContext('2d');
-  var F1=3,F2=3.6,W,H,dpr;
+  var cv=document.getElementById('waves'),cx=cv.getContext('2d'),o=document.getElementById('df');
+  var F1=3,W,H,dpr,still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var f2=3.6,p1=3.15,p2=3.78,last=0,txt=0;
   function size(){dpr=window.devicePixelRatio||1;W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0)}
-  function line(f,t,a,col,lw,glow){
+  function line(f,ph,a,col,lw){
     cx.beginPath();
-    for(var x=0;x<=W;x+=3){var u=x/W,y=H/2-a*(f===0?0:Math.sin(2*Math.PI*f*u-t*f*.7));x?cx.lineTo(x,y):cx.moveTo(x,y)}
-    cx.strokeStyle=col;cx.lineWidth=lw;cx.shadowColor=glow||'transparent';cx.shadowBlur=glow?14:0;cx.stroke();cx.shadowBlur=0;
+    for(var x=0;x<=W;x+=3){var y=H/2-a*Math.sin(2*Math.PI*f*x/W-ph);x?cx.lineTo(x,y):cx.moveTo(x,y)}
+    cx.strokeStyle=col;cx.lineWidth=lw;cx.stroke();
   }
   function draw(){
-    var t=1.5,f2=F2,A=H*.17;
+    var A=H*.17;
     cx.clearRect(0,0,W,H);
     cx.strokeStyle='#3a2b66';cx.lineWidth=1;cx.beginPath();cx.moveTo(0,H/2);cx.lineTo(W,H/2);cx.stroke();
-    line(F1,t,A,'rgba(127,220,247,.55)',2);
-    line(f2,t,A,'rgba(154,114,255,.65)',2);
+    line(F1,p1,A,'rgba(127,220,247,.55)',2);
+    line(f2,p2,A,'rgba(154,114,255,.65)',2);
     cx.beginPath();
-    for(var x=0;x<=W;x+=3){var u=x/W,y=H/2-A*(Math.sin(2*Math.PI*F1*u-t*F1*.7)+Math.sin(2*Math.PI*f2*u-t*f2*.7));x?cx.lineTo(x,y):cx.moveTo(x,y)}
+    for(var x=0;x<=W;x+=3){var u=x/W,y=H/2-A*(Math.sin(2*Math.PI*F1*u-p1)+Math.sin(2*Math.PI*f2*u-p2));x?cx.lineTo(x,y):cx.moveTo(x,y)}
     cx.strokeStyle='#ffffff';cx.lineWidth=3.5;cx.lineJoin='round';cx.shadowColor='#7fdcf7';cx.shadowBlur=16;cx.stroke();cx.shadowBlur=0;
   }
-  addEventListener('resize',function(){size();draw()});
-  size();draw();
+  /* La frecuencia de la onda violeta oscila sola entre 2,6 y 4,6 ciclos; las fases se acumulan para que el movimiento sea continuo. */
+  function tick(ms){
+    var dt=Math.min((ms-(last||ms))/1000,.1);last=ms;
+    f2=3.6+Math.sin(ms/1000*.12)*1;
+    p1+=dt*F1*.7;p2+=dt*f2*.7;
+    if(ms-txt>250){txt=ms;o.textContent=Math.abs(f2-F1).toFixed(1).replace('.',',')}
+    draw();requestAnimationFrame(tick);
+  }
+  addEventListener('resize',function(){size();if(still)draw()});
+  size();still?draw():requestAnimationFrame(tick);
+
+  var gal=document.getElementById('gal'),vis=document.getElementById('vis');
+  if(!window.FOTOS||!FOTOS.length){document.getElementById('galvacia').hidden=false}
+  else FOTOS.forEach(function(f){
+    var fg=document.createElement('figure'),b=document.createElement('button'),im=document.createElement('img'),h=document.createElement('h3'),p=document.createElement('p');
+    b.type='button';b.className='ph';b.setAttribute('aria-label','Ampliar: '+f.titulo);
+    im.src=f.src;im.alt=f.alt||f.titulo;im.loading='lazy';b.appendChild(im);
+    h.textContent=f.titulo;p.textContent=f.descripcion;
+    b.addEventListener('click',function(){
+      vis.querySelector('img').src=f.src;vis.querySelector('img').alt=f.alt||f.titulo;
+      vis.querySelector('h3').textContent=f.titulo;vis.querySelector('p').textContent=f.descripcion;
+      vis.showModal();
+    });
+    fg.appendChild(b);fg.appendChild(h);fg.appendChild(p);gal.appendChild(fg);
+  });
+  vis.querySelector('.x').addEventListener('click',function(){vis.close()});
+  vis.addEventListener('click',function(e){if(e.target===vis)vis.close()});
 
   document.getElementById('form').addEventListener('submit',function(ev){
     ev.preventDefault();
