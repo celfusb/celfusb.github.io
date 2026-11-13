@@ -47,9 +47,6 @@ a{color:inherit}
 .lab{margin-top:clamp(28px,5vw,56px);border-top:1px solid #3a2b66;padding:18px 0 24px}
 .lab canvas{display:block;width:100%;height:clamp(190px,30vw,300px)}
 .ctl{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;margin-top:10px;color:#cfc6ee;font-size:.95rem}
-.ctl label{display:flex;align-items:center;gap:12px}
-.ctl input{width:min(260px,52vw);accent-color:#7fdcf7}
-.ctl output{font-variant-numeric:tabular-nums;color:#7fdcf7;font-weight:600}
 .key{display:flex;gap:16px;flex-wrap:wrap}
 .key span::before{content:"";display:inline-block;width:18px;height:3px;border-radius:2px;margin-right:7px;vertical-align:middle;background:var(--c)}
 
@@ -90,6 +87,23 @@ input[type=text]:focus,input[type=email]:focus,textarea:focus{border-color:var(-
 form .btn{justify-self:start}
 #ok{color:var(--cel);font-weight:500;min-height:1.5em}
 
+.gallery{background:var(--black);color:#efeaff}
+.gallery .lead{color:#b3a8d6}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px;margin-top:36px}
+.ph{margin:0;border:1px solid #3a2b66;border-radius:14px;overflow:hidden;background:#150c2b}
+.ph button{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.ph img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.ph figcaption{padding:16px 18px 20px}
+.ph h3{font-size:1.15rem;margin-bottom:6px}
+.ph p{color:#b3a8d6;font-size:.97rem}
+.empty{margin-top:36px;color:#b3a8d6;border-left:3px solid #7fdcf7;padding-left:18px}
+#lb{border:0;border-radius:14px;padding:0;background:var(--black);color:#efeaff;width:min(960px,94vw)}
+#lb::backdrop{background:rgba(7,4,15,.88)}
+#lb img{display:block;width:100%;max-height:72vh;object-fit:contain;background:#000}
+#lb .cap{padding:16px 20px 20px}
+#lb h3{font-size:1.25rem;margin-bottom:6px}
+#lb p{color:#b3a8d6}
+#lb .x{position:absolute;top:10px;right:10px;border:0;border-radius:99px;background:#7fdcf7;color:#07040f;font:600 .95rem var(--tx);padding:8px 16px;cursor:pointer}
 footer{background:var(--black);color:#b3a8d6;padding:32px 0;font-size:.95rem}
 footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
 footer .brand{color:#efeaff}
@@ -111,6 +125,7 @@ footer .brand .logo{width:40px}
     <nav aria-label="Principal">
       <a href="#nosotros">Nosotros</a>
       <a href="#noticias">Noticias</a>
+      <a href="#galeria">Galería</a>
       <a href="#contacto">Contacto</a>
     </nav>
   </div>
@@ -128,8 +143,7 @@ footer .brand .logo{width:40px}
       <div class="lab">
         <canvas id="waves" role="img" aria-label="Simulación de la suma de dos ondas con frecuencias distintas"></canvas>
         <div class="ctl">
-          <label for="f2">Frecuencia de la onda violeta (¡esta es nuestra identidad!) <input id="f2" type="range" min="2" max="6" step="0.1" value="3.6"></label>
-          <span>Diferencia: <output id="df" for="f2">0,6</output> ciclos</span>
+          <span>Suma de dos ondas de frecuencia distinta (¡esta es nuestra identidad!)</span>
           <span class="key"><span style="--c:#7fdcf7">Onda 1</span><span style="--c:#9a72ff">Onda 2</span><span style="--c:#ffffff">Suma</span></span>
         </div>
       </div>
@@ -175,6 +189,14 @@ footer .brand .logo{width:40px}
     </div>
   </section>
 
+  <section id="galeria" class="gallery">
+    <div class="wrap">
+      <h2>Galería</h2>
+      <p class="lead">Momentos de nuestras actividades, charlas y encuentros.</p>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
   <section id="contacto">
     <div class="wrap contact">
       <div>
@@ -204,18 +226,45 @@ footer .brand .logo{width:40px}
   </div>
 </footer>
 
+<dialog id="lb" aria-label="Foto ampliada">
+  <button class="x" type="button" id="lbx">Cerrar</button>
+  <img id="lbi" alt="">
+  <div class="cap"><h3 id="lbt"></h3><p id="lbd"></p></div>
+</dialog>
+
+<script src="galeria.js"></script>
 <script>
 (function(){
-  var cv=document.getElementById('waves'),cx=cv.getContext('2d'),s=document.getElementById('f2'),o=document.getElementById('df');
-  var F1=3,W,H,dpr,still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var list=window.FOTOS||[],g=document.getElementById('grid'),lb=document.getElementById('lb');
+  if(!list.length){var e=document.createElement('p');e.className='empty';e.textContent='Pronto publicaremos fotos de nuestras actividades.';g.replaceWith(e);return}
+  list.forEach(function(f){
+    var fig=document.createElement('figure'),b=document.createElement('button'),im=new Image(),c=document.createElement('figcaption'),h=document.createElement('h3'),d=document.createElement('p');
+    fig.className='ph';b.type='button';b.setAttribute('aria-label','Ampliar foto: '+(f.titulo||''));
+    im.src=f.src;im.alt=f.titulo||'';im.loading='lazy';im.onerror=function(){fig.remove()};
+    h.textContent=f.titulo||'';d.textContent=f.descripcion||'';
+    b.appendChild(im);c.appendChild(h);c.appendChild(d);fig.appendChild(b);fig.appendChild(c);g.appendChild(fig);
+    b.onclick=function(){
+      document.getElementById('lbi').src=f.src;document.getElementById('lbi').alt=f.titulo||'';
+      document.getElementById('lbt').textContent=f.titulo||'';document.getElementById('lbd').textContent=f.descripcion||'';
+      lb.showModal();
+    };
+  });
+  document.getElementById('lbx').onclick=function(){lb.close()};
+  lb.addEventListener('click',function(ev){if(ev.target===lb)lb.close()});
+})();
+</script>
+<script>
+(function(){
+  var cv=document.getElementById('waves'),cx=cv.getContext('2d');
+  var F1=3,F2=3.6,W,H,dpr;
   function size(){dpr=window.devicePixelRatio||1;W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0)}
   function line(f,t,a,col,lw,glow){
     cx.beginPath();
     for(var x=0;x<=W;x+=3){var u=x/W,y=H/2-a*(f===0?0:Math.sin(2*Math.PI*f*u-t*f*.7));x?cx.lineTo(x,y):cx.moveTo(x,y)}
     cx.strokeStyle=col;cx.lineWidth=lw;cx.shadowColor=glow||'transparent';cx.shadowBlur=glow?14:0;cx.stroke();cx.shadowBlur=0;
   }
-  function draw(ms){
-    var t=ms/1000,f2=parseFloat(s.value),A=H*.17;
+  function draw(){
+    var t=1.5,f2=F2,A=H*.17;
     cx.clearRect(0,0,W,H);
     cx.strokeStyle='#3a2b66';cx.lineWidth=1;cx.beginPath();cx.moveTo(0,H/2);cx.lineTo(W,H/2);cx.stroke();
     line(F1,t,A,'rgba(127,220,247,.55)',2);
@@ -224,10 +273,8 @@ footer .brand .logo{width:40px}
     for(var x=0;x<=W;x+=3){var u=x/W,y=H/2-A*(Math.sin(2*Math.PI*F1*u-t*F1*.7)+Math.sin(2*Math.PI*f2*u-t*f2*.7));x?cx.lineTo(x,y):cx.moveTo(x,y)}
     cx.strokeStyle='#ffffff';cx.lineWidth=3.5;cx.lineJoin='round';cx.shadowColor='#7fdcf7';cx.shadowBlur=16;cx.stroke();cx.shadowBlur=0;
   }
-  function tick(ms){draw(ms);if(!still)requestAnimationFrame(tick)}
-  s.addEventListener('input',function(){o.textContent=Math.abs(parseFloat(s.value)-F1).toFixed(1).replace('.',',');if(still)draw(1500)});
-  addEventListener('resize',function(){size();if(still)draw(1500)});
-  size();still?draw(1500):requestAnimationFrame(tick);
+  addEventListener('resize',function(){size();draw()});
+  size();draw();
 
   document.getElementById('form').addEventListener('submit',function(ev){
     ev.preventDefault();
