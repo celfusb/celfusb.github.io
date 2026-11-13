@@ -1,0 +1,2 @@
+Sube aquí las fotos de la galería (.jpg, .png o .webp)
+y luego agrégalas en el archivo galeria.js.
