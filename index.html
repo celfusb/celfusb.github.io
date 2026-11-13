@@ -145,11 +145,6 @@ footer .brand .logo{width:40px}
       </div>
       <div class="lab">
         <canvas id="waves" role="img" aria-label="Simulación de la suma de dos ondas con frecuencias distintas"></canvas>
-        <div class="ctl">
-          <span>La onda violeta cambia sola de frecuencia (¡esta es nuestra identidad!)</span>
-          <span>Diferencia: <output id="df">0,6</output> ciclos</span>
-          <span class="key"><span style="--c:#7fdcf7">Onda 1</span><span style="--c:#9a72ff">Onda 2</span><span style="--c:#ffffff">Suma</span></span>
-        </div>
       </div>
     </div>
   </div>
@@ -252,9 +247,9 @@ var FOTOS=[
 </script>
 <script>
 (function(){
-  var cv=document.getElementById('waves'),cx=cv.getContext('2d'),o=document.getElementById('df');
+  var cv=document.getElementById('waves'),cx=cv.getContext('2d');
   var F1=3,W,H,dpr,still=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var f2=3.6,p1=3.15,p2=3.78,last=0,txt=0;
+  var f2=3.6,p1=3.15,p2=3.78,last=0;
   function size(){dpr=window.devicePixelRatio||1;W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0)}
   function line(f,ph,a,col,lw){
     cx.beginPath();
@@ -276,7 +271,6 @@ var FOTOS=[
     var dt=Math.min((ms-(last||ms))/1000,.1);last=ms;
     f2=3.6+Math.sin(ms/1000*.12)*1;
     p1+=dt*F1*.7;p2+=dt*f2*.7;
-    if(ms-txt>250){txt=ms;o.textContent=Math.abs(f2-F1).toFixed(1).replace('.',',')}
     draw();requestAnimationFrame(tick);
   }
   addEventListener('resize',function(){size();if(still)draw()});
